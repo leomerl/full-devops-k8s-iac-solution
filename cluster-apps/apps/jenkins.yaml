@@ -26,6 +26,7 @@ spec:
           additionalPlugins:
             - job-dsl
             - docker-workflow
+            - kubernetes
           volumes:
             - name: docker-sock
               hostPath:
