@@ -9,10 +9,10 @@ module "eks" {
 
   name                                     = var.name
   kubernetes_version                       = var.kubernetes_version
-  endpoint_private_access                  = true
+  endpoint_private_access                  = var.endpoint_private_access
   endpoint_public_access                   = length(var.endpoint_public_access_cidrs) > 0
   endpoint_public_access_cidrs             = var.endpoint_public_access_cidrs
-  enable_cluster_creator_admin_permissions = true
+  enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
 
   addons = {
     vpc-cni = {
@@ -88,15 +88,16 @@ module "eks" {
   eks_managed_node_groups = {
     default = {
       instance_types           = var.instance_types
+      capacity_type            = var.capacity_type
       force_update_version     = true
       ami_release_version      = var.ami_release_version
       use_name_prefix          = false
       iam_role_name            = "${var.name}-ng-default"
       iam_role_use_name_prefix = false
 
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      min_size     = var.min_size
+      max_size     = var.max_size
+      desired_size = var.desired_size
 
       update_config = {
         max_unavailable_percentage = 50

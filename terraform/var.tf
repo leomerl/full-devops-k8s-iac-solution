@@ -9,7 +9,7 @@ variable "DEFAULT_INSTANCE" {
     instance_type = list(string)
   })
   default = {
-    instance_type = ["m5.large"]
+    instance_type = ["t3.medium"]
   }
 }
 
