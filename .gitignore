@@ -15,6 +15,7 @@ override.tf.json
 
 # SSH keys
 terraform/ssh/
+*.pem
 
 # OS
 .DS_Store
