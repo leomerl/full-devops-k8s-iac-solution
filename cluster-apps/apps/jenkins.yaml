@@ -23,6 +23,16 @@ spec:
             limits:
               cpu: "1"
               memory: "1Gi"
+          additionalPlugins:
+            - job-dsl
+            - docker-workflow
+          volumes:
+            - name: docker-sock
+              hostPath:
+                path: /var/run/docker.sock
+          volumeMounts:
+            - name: docker-sock
+              mountPath: /var/run/docker.sock
         persistence:
           enabled: true
           size: 5Gi

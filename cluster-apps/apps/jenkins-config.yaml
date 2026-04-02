@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins-config
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/leomerl/full-devops-k8s-iac-solution.git
+    targetRevision: main
+    path: cluster-apps/apps/jenkins
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jenkins
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
