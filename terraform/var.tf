@@ -1,8 +1,6 @@
-
 variable "AWS_REGION" {
-  default = "eu-west-1"
+  type = string
 }
-
 
 variable "DEFAULT_INSTANCE" {
   type = object({
@@ -14,17 +12,15 @@ variable "DEFAULT_INSTANCE" {
 }
 
 variable "ALLOW_IPS" {
-  default = ["46.116.246.0/24"]
+  type = list(string)
 }
 
 variable "cluster_name" {
-  type    = string
-  default = "lab-eks-cluster"
+  type = string
 }
 
 variable "cluster_version" {
-  type    = string
-  default = "1.31"
+  type = string
 }
 
 variable "ami_release_version" {
@@ -33,18 +29,15 @@ variable "ami_release_version" {
 }
 
 variable "remote_network_cidr" {
-  type    = string
-  default = "10.1.0.0/16"
+  type = string
 }
 
 variable "remote_pod_cidr" {
-  type    = string
-  default = "10.2.0.0/16"
+  type = string
 }
 
 variable "capacity_type" {
-  type    = string
-  default = "SPOT"
+  type = string
   validation {
     condition     = contains(["ON_DEMAND", "SPOT"], var.capacity_type)
     error_message = "capacity_type must be ON_DEMAND or SPOT."
