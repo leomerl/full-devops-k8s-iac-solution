@@ -16,6 +16,8 @@ override.tf.json
 # SSH keys
 terraform/ssh/
 *.pem
+k3s.yaml
+cluster-apps/apps/
 
 # OS
 .DS_Store
@@ -23,6 +25,7 @@ Thumbs.db
 
 # Secrets
 .env
+*.pem
 
 # IDE
 .vscode/

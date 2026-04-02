@@ -1,17 +1,6 @@
-variable "cluster_endpoint" {
-  type = string
-}
-
-variable "cluster_ca_certificate" {
-  type = string
-}
-
-variable "cluster_name" {
-  type= string
-}
-
 variable "chart_version" {
-  type = string
+  type    = string
+  default = null
 }
 
 variable "namespace" {

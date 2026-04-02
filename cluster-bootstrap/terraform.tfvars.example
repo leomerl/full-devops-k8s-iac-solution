@@ -1,0 +1,1 @@
+kubeconfig_path = "../terraform-k3s/k3s.yaml"
