@@ -14,3 +14,7 @@ output "k3s_token" {
   value     = module.k3s.k3s_token
   sensitive = true
 }
+
+output "ssh_key_path" {
+  value = abspath("${path.module}/${var.cluster_name}.pem")
+}
