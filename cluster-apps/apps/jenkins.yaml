@@ -14,7 +14,8 @@ spec:
         controller:
           serviceType: NodePort
           nodePort: 32000
-          adminPassword: "admin"
+          admin:
+            password: "admin"
           resources:
             requests:
               cpu: "250m"
