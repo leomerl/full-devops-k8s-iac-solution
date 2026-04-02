@@ -17,7 +17,6 @@ override.tf.json
 terraform/ssh/
 *.pem
 k3s.yaml
-cluster-apps/apps/
 
 # OS
 .DS_Store
