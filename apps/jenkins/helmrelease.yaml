@@ -39,6 +39,11 @@ spec:
       volumeMounts:
         - name: docker-sock
           mountPath: /var/run/docker.sock
+      sidecars:
+        configAutoReload:
+          label: jenkins-jenkins-config
+          labelValue: "true"
+          folder: /var/jenkins_home/casc_configs
     persistence:
       enabled: true
       size: 5Gi
