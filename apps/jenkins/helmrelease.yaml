@@ -31,7 +31,6 @@ spec:
           memory: "1Gi"
       additionalPlugins:
         - job-dsl
-        - kubernetes
       sidecars:
         configAutoReload:
           label: jenkins-jenkins-config
