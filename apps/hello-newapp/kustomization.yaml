@@ -6,4 +6,4 @@ resources:
 - service.yaml
 images:
 - name: rougawh/hello-newapp
-  newTag: "3"
+  newTag: "4"
