@@ -5,7 +5,6 @@ configMapGenerator:
     namespace: jenkins
     files:
       - casc.yaml
-      - casc-k8s.yaml
       - pipeline.groovy
     options:
       labels:
