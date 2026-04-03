@@ -3,10 +3,21 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
+source "$REPO_ROOT/.env"
+
+for cmd in terraform kubectl; do
+  if ! command -v "$cmd" &>/dev/null; then
+    echo "ERROR: $cmd is not installed or not in PATH"
+    exit 1
+  fi
+done
+
 run_apply() {
   local dir="$1"
-  echo "==> terraform apply: $dir"
+  echo "==> terraform init: $dir"
   cd "$REPO_ROOT/$dir"
+  terraform init
+  echo "==> terraform apply: $dir"
   terraform apply -auto-approve
 }
 

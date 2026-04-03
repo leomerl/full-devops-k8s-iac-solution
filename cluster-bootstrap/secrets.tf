@@ -1,7 +1,9 @@
 resource "kubernetes_secret" "dockerhub_creds" {
+  depends_on = [module.flux]
+
   metadata {
     name      = "dockerhub-creds"
-    namespace = "jenkins"
+    namespace = "flux-system"
   }
 
   data = {
@@ -16,9 +18,11 @@ resource "kubernetes_secret" "dockerhub_creds" {
 }
 
 resource "kubernetes_secret" "github_token" {
+  depends_on = [module.flux]
+
   metadata {
     name      = "github-token"
-    namespace = "jenkins"
+    namespace = "flux-system"
   }
 
   data = {
