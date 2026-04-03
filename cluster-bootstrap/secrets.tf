@@ -4,6 +4,10 @@ resource "kubernetes_secret" "dockerhub_creds" {
   metadata {
     name      = "dockerhub-creds"
     namespace = "flux-system"
+    annotations = {
+      "reflector.v1.k8s.emberstack.com/reflection-allowed"            = "true"
+      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = ".*"
+    }
   }
 
   data = {
@@ -23,6 +27,10 @@ resource "kubernetes_secret" "github_token" {
   metadata {
     name      = "github-token"
     namespace = "flux-system"
+    annotations = {
+      "reflector.v1.k8s.emberstack.com/reflection-allowed"            = "true"
+      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = ".*"
+    }
   }
 
   data = {
