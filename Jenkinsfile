@@ -34,17 +34,17 @@ podTemplate(
       sh "git clone --branch gitops --single-branch https://oauth2:${env.GITHUB_TOKEN}@github.com/leomerl/full-devops-k8s-iac-solution.git gitops-repo"
 
       sh """
-        mkdir -p gitops-repo/manifests/${appname}
-        cp -r ${env.WORKSPACE}/k8s/. gitops-repo/manifests/${appname}/
+        mkdir -p gitops-repo/apps/${appname}
+        cp -r ${env.WORKSPACE}/k8s/. gitops-repo/apps/${appname}/
       """
 
-      sh "cd gitops-repo/manifests/${appname} && kustomize edit set image ${appimage}:${apptag}"
+      sh "cd gitops-repo/apps/${appname} && kustomize edit set image ${appimage}:${apptag}"
 
       sh """
         cd gitops-repo
         git config user.email "jenkins@ci"
         git config user.name "Jenkins"
-        git add manifests/${appname}/
+        git add apps/${appname}/
         git diff --cached --quiet || git commit -m "Update ${appname} image to build ${apptag}"
         git push origin gitops
       """
