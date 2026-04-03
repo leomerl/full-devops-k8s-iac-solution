@@ -12,6 +12,26 @@ run_apply() {
 
 KUBECONFIG_PATH="${REPO_ROOT}/terraform-k3s/k3s.yaml"
 
+validate_tfvars() {
+  local dir="$REPO_ROOT/$1"
+  local example="$dir/terraform.tfvars.example"
+  local tfvars="$dir/terraform.tfvars"
+
+  echo "==> validating tfvars: $1"
+
+  if [[ ! -f "$tfvars" ]]; then
+    echo "ERROR: $tfvars not found"
+    exit 1
+  fi
+
+  while IFS= read -r key; do
+    if ! grep -qE "^\s*${key}\s*=" "$tfvars"; then
+      echo "ERROR: missing key '$key' in $tfvars"
+      exit 1
+    fi
+  done < <(grep -E '^\s*\w+\s*=' "$example" | sed 's/\s*=.*//' | tr -d ' ')
+}
+
 kube_wait() {
   local label="$1"
   local namespace="$2"
@@ -59,6 +79,8 @@ validate_bootstrap() {
   echo "==> bootstrap looks healthy"
 }
 
+validate_tfvars "terraform-k3s"
+validate_tfvars "cluster-bootstrap"
 run_apply "terraform-k3s"
 validate_cluster
 run_apply "cluster-bootstrap"
