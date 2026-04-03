@@ -28,7 +28,7 @@ podTemplate(
 
     stage('gitops') {
       sh """
-        curl -sL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${kustomizeVersion}/kustomize_${kustomizeVersion}_linux_amd64.tar.gz" | tar xz -C /usr/local/bin
+        curl -sL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${kustomizeVersion}/kustomize_${kustomizeVersion}_linux_amd64.tar.gz" | tar xz -C ${env.WORKSPACE}
       """
 
       sh "git clone --branch gitops --single-branch https://oauth2:${env.GITHUB_TOKEN}@github.com/leomerl/full-devops-k8s-iac-solution.git gitops-repo"
@@ -38,7 +38,7 @@ podTemplate(
         cp -r ${env.WORKSPACE}/k8s/. gitops-repo/apps/${appname}/
       """
 
-      sh "cd gitops-repo/apps/${appname} && kustomize edit set image ${appimage}:${apptag}"
+      sh "cd gitops-repo/apps/${appname} && ${env.WORKSPACE}/kustomize edit set image ${appimage}:${apptag}"
 
       sh """
         cd gitops-repo
