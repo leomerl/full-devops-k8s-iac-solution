@@ -1,4 +1,7 @@
 pipelineJob('app-pipeline') {
+  triggers {
+    scm('* * * * *')
+  }
   definition {
     cpsScm {
       scm {
