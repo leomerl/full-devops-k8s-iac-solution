@@ -1,1 +1,5 @@
 kubeconfig_path = "../terraform-k3s/k3s.yaml"
+
+dockerhub_username      = "rougawh"
+dockerhub_token         = ""
+github_token            = ""
