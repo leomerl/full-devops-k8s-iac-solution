@@ -1,8 +1,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: emberstack
+  name: ww-gitops
   namespace: flux-system
 spec:
-  interval: 24h
-  url: https://emberstack.github.io/helm-charts
+  interval: 60m
+  type: oci
+  url: oci://ghcr.io/weaveworks/charts
