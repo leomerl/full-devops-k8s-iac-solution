@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: jenkins
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: jenkins
+        namespace: flux-system
+      interval: 1h
+  install:
+    createNamespace: true
+  values:
+    controller:
+      serviceType: NodePort
+      nodePort: 32000
+      admin:
+        password: "admin"
+      resources:
+        requests:
+          cpu: "250m"
+          memory: "512Mi"
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+      additionalPlugins:
+        - job-dsl
+        - docker-workflow
+      volumes:
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+      volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+    persistence:
+      enabled: true
+      size: 5Gi
