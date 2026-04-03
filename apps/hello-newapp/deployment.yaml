@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-newapp
+  namespace: hello-newapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-newapp
+  template:
+    metadata:
+      labels:
+        app: hello-newapp
+    spec:
+      containers:
+        - name: hello-newapp
+          image: rougawh/hello-newapp
+          ports:
+            - containerPort: 80
