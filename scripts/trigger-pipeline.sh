@@ -5,9 +5,8 @@ if [ -f "$(dirname "$0")/../.env" ]; then
   source "$(dirname "$0")/../.env"
 fi
 
-if [ -z "$JENKINS_IP" ]; then
-  read -rp "Jenkins IP: " JENKINS_IP
-fi
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+JENKINS_IP="$(cd "$REPO_ROOT/terraform-k3s" && terraform output -raw server_public_ip)"
 
 JENKINS_URL="http://${JENKINS_IP}:32000"
 
