@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: jenkins
-      version: "*"
+      version: "5.9.12"
       sourceRef:
         kind: HelmRepository
         name: jenkins
@@ -31,14 +31,7 @@ spec:
           memory: "1Gi"
       additionalPlugins:
         - job-dsl
-        - docker-workflow
-      volumes:
-        - name: docker-sock
-          hostPath:
-            path: /var/run/docker.sock
-      volumeMounts:
-        - name: docker-sock
-          mountPath: /var/run/docker.sock
+        - kubernetes
       sidecars:
         configAutoReload:
           label: jenkins-jenkins-config
