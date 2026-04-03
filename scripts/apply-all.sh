@@ -96,3 +96,8 @@ run_apply "terraform-k3s"
 validate_cluster
 run_apply "cluster-bootstrap"
 validate_bootstrap
+
+SSH_KEY="$(cd "$REPO_ROOT/terraform-k3s" && terraform output -raw ssh_key_path)"
+SERVER_IP="$(cd "$REPO_ROOT/terraform-k3s" && terraform output -raw server_public_ip)"
+echo ""
+echo "==> ssh -i $SSH_KEY ec2-user@$SERVER_IP"
