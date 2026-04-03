@@ -3,3 +3,4 @@ kubeconfig_path = "../terraform-k3s/k3s.yaml"
 dockerhub_username      = "rougawh"
 dockerhub_token         = ""
 github_token            = ""
+weave_gitops_password_hash = ""  # bcrypt hash, generate with: htpasswd -nBC 10 "" | tr -d ':\n'

@@ -37,3 +37,16 @@ resource "kubernetes_secret" "github_token" {
     "token" = var.github_token
   }
 }
+
+resource "kubernetes_secret" "weave_gitops_admin" {
+  depends_on = [module.flux]
+
+  metadata {
+    name      = "weave-gitops-admin"
+    namespace = "flux-system"
+  }
+
+  data = {
+    "passwordHash" = var.weave_gitops_password_hash
+  }
+}

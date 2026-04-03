@@ -16,3 +16,8 @@ variable "github_token" {
   type      = string
   sensitive = true
 }
+
+variable "weave_gitops_password_hash" {
+  type      = string
+  sensitive = true
+}
