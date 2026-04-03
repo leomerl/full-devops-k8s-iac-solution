@@ -4,5 +4,4 @@ resources:
   - jenkins
   - jenkins-config
   - hello-newapp
-  - argocd
   - weave-gitops
