@@ -4,7 +4,7 @@ set -eo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$REPO_ROOT/.env"
 
-KUBECONFIG="$REPO_ROOT/terraform-k3s/k3s.yaml"
+KUBECONFIG="$REPO_ROOT/02-terraform-k3s/k3s.yaml"
 KCTL="kubectl --kubeconfig $KUBECONFIG"
 
 echo "==> kustomizations and helmreleases"

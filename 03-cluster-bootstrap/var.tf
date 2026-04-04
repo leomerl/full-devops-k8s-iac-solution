@@ -1,6 +1,6 @@
 variable "kubeconfig_path" {
   type    = string
-  default = "../terraform-k3s/k3s.yaml"
+  default = "../02-terraform-k3s/k3s.yaml"
 }
 
 variable "dockerhub_username" {
@@ -17,7 +17,12 @@ variable "github_token" {
   sensitive = true
 }
 
-variable "weave_gitops_password_hash" {
+
+variable "argocd_admin_password" {
   type      = string
   sensitive = true
 }
+# variable "weave_gitops_password_hash" {
+#   type      = string
+#   sensitive = true
+# }

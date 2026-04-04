@@ -18,3 +18,9 @@ variable "chart_version" {
 variable "namespace" {
   type = string
 }
+
+
+variable "set" {
+  type    = list(object({ name = string, value = string }))
+  default = []
+}
