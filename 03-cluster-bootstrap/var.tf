@@ -28,6 +28,11 @@ variable "github_token" {
   sensitive = true
 }
 
+variable "argocd_ingress" {
+  type      = string
+  sensitive = false
+  default = "127.0.0.1.nip.io"
+}
 
 variable "argocd_admin_password" {
   type      = string

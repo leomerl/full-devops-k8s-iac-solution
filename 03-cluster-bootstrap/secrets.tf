@@ -1,8 +1,8 @@
-resource "kubernetes_secret" "dockerhub_creds" {
+resource "kubernetes_secret" "docker-cred" {
   depends_on = [module.argo-cd]
 
   metadata {
-    name      = "dockerhub-creds"
+    name      = "docker-cred"
     namespace = "argocd"
     annotations = {
       "reflector.v1.k8s.emberstack.com/reflection-allowed"            = "true"

@@ -10,5 +10,6 @@ data "terraform_remote_state" "k3s" {
 locals {
   kubectl = "kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml"
   ssh     = "ssh -i ${data.terraform_remote_state.k3s.outputs.ssh_key_path} -o StrictHostKeyChecking=no ec2-user@${data.terraform_remote_state.k3s.outputs.server_public_ip}"
+  server_ip = data.terraform_remote_state.k3s.outputs.server_public_ip
 }
 

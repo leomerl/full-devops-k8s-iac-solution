@@ -12,7 +12,27 @@ module "argo-cd" {
     {
       name  = "configs.secret.argocdServerAdminPassword"
       value = var.argocd_admin_password
-    }
+    },
+         {
+        name  = "server.ingress.enabled"
+        value = "true"
+      },
+      {
+        name  = "server.ingress.hostname"
+        value = "argocd.${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io"
+      },
+      {
+        name  = "server.ingress.ingressClassName"
+        value = "traefik"
+      },
+      {
+        name  = "configs.params.server.insecure"
+        value = "true"
+      },
+      {
+        name  = "server.insecure"
+        value = "true"
+      }
   ]
 
 }
