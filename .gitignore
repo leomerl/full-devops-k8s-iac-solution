@@ -13,6 +13,9 @@ override.tf.json
 *.tfvars
 *.tfvars.json
 
+# Outputs
+ServerIP.txt
+
 # SSH keys
 terraform/ssh/
 *.pem
@@ -40,3 +43,4 @@ terraform.tfvars
 
 #TESTS
 99-test*
+
