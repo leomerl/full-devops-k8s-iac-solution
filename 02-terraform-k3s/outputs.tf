@@ -18,3 +18,9 @@ output "k3s_token" {
 output "ssh_key_path" {
   value = abspath("${path.module}/${var.cluster_name}.pem")
 }
+
+resource "local_file" "exported-server-ip" {
+  content  = module.k3s.server_public_ip
+  filename = "../ServerIP.txt"
+
+}
