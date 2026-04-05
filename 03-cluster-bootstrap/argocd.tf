@@ -1,17 +1,3 @@
-data "terraform_remote_state" "k3s" {
-  backend = "s3"
-  config = {
-    bucket = "levy-test-bucket"
-    key    = "k3s/terraform.tfstate"
-    region = "eu-west-1"
-  }
-}
-
-locals {
-  kubectl = "kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml"
-  ssh     = "ssh -i ${data.terraform_remote_state.k3s.outputs.ssh_key_path} -o StrictHostKeyChecking=no ec2-user@${data.terraform_remote_state.k3s.outputs.server_public_ip}"
-}
-
 
 
 module "argo-cd" {
@@ -32,51 +18,15 @@ module "argo-cd" {
 }
 
 
-resource "null_resource" "argocd_appset" {
+resource "null_resource" "applicationsets" {
   depends_on = [module.argo-cd]
 
+  for_each = fileset("${path.module}/applicationsets", "*.yaml")
+
   provisioner "local-exec" {
-    command = <<-EOT
-      kubectl --kubeconfig ${var.kubeconfig_path} apply -f - <<'YAML'
-      apiVersion: argoproj.io/v1alpha1
-      kind: ApplicationSet
-      metadata:
-        name: projects-qa-only
-        namespace: argocd
-      spec:
-        goTemplate: true
-        goTemplateOptions:
-          - missingkey=error
-        generators:
-          - list:
-              elements:
-                - app: app-1
-                  cluster: k8s-qa
-                - app: app-2
-                  cluster: k8s-qa
-        template:
-          metadata:
-            name: "{{.app}}-{{.cluster}}"
-          spec:
-            project: default
-            source:
-              repoURL: https://github.com/elevy99927/argo-demo-repo.git
-              targetRevision: application
-              path: "{{.app}}/{{.cluster}}"
-            destination:
-              server: https://kubernetes.default.svc
-              namespace: "{{.app}}-{{.cluster}}"
-            syncPolicy:
-              automated:
-                prune: true
-                selfHeal: true
-              syncOptions:
-                - CreateNamespace=true
-      YAML
-    EOT
+    command = "kubectl --kubeconfig ${var.kubeconfig_path} apply -f ${path.module}/applicationsets/${each.value}"
   }
 }
-
 
 
 

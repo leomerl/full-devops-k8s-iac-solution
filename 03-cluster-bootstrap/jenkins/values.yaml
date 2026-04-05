@@ -1,0 +1,30 @@
+##################################################################
+## Jenkins values.yaml Demo!!
+## the real values is located in the argocd repo
+## https://github.com/elevy99927/argo-demo-repo/tree/application
+####################################################################
+
+controller:
+  JCasC:
+    enabled: true
+    # Define external configuration URLs (Git, HTTP)
+    configUrls:
+      #- https://raw.githubusercontent.com/username/repo/main/jenkins-casc.yaml
+      - https://raw.githubusercontent.com/elevy99927/Jenkins-k8s/refs/heads/main/Part4-CICD/04-Jenkins/casc/jenkins-casc.yaml
+
+  admin:
+    # -- Admin username created as a secret if `controller.admin.createSecret` is true
+    username: "admin"
+    # -- Admin password created as a secret if `controller.admin.createSecret` is true
+    # @default -- <random password>
+    password: "Aa123456"
+    jenkinsAdminEmail: "eyal@levys.co.il"
+
+  # Kubernetes service type for the JNLP agent service
+  # agentListenerServiceType is the Kubernetes Service type for the JNLP agent service,
+  # either 'LoadBalancer', 'NodePort', or 'ClusterIP'
+  # Note if you set this to 'LoadBalancer', you *must* define annotations to secure it. By default,
+  # this will be an external load balancer and allowing inbound 0.0.0.0/0, a HUGE
+  # security risk: https://github.com/kubernetes/charts/issues/1341
+  # -- Defines how to expose the agentListener service
+  agentListenerServiceType: "ClusterIP"

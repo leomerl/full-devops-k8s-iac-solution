@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: jenkins
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - list:
+        elements:
+          - app: jenkins
+            cluster: k8s-qa
+
+  template:
+    metadata:
+      name: "{{.app}}-{{.cluster}}"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://charts.jenkins.io
+          chart: jenkins
+          targetRevision: 5.9.12
+          helm:
+            valueFiles:
+              - $values/{{.app}}/{{.cluster}}/values.yaml
+        - repoURL: https://github.com/elevy99927/argo-demo-repo.git
+          targetRevision: application
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: jenkins
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

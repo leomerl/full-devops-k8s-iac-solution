@@ -1,3 +1,14 @@
+variable "AWS_REGION" {
+  type = string
+}
+
+variable "ALLOW_IPS" {
+  type = list(string)
+}
+variable "state_bucket_name"{
+  type    = string
+}
+
 variable "kubeconfig_path" {
   type    = string
   default = "../02-terraform-k3s/k3s.yaml"
