@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: reflector
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - list:
+        elements:
+          - app: reflector
+            cluster: k8s-qa
+
+  template:
+    metadata:
+      name: "{{.app}}-{{.cluster}}"
+    spec:
+      project: default
+      sources:
+        - repoURL: https://emberstack.github.io/helm-charts
+          chart: reflector
+          targetRevision: 10.0.27
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: devops-utils
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -27,7 +27,11 @@ spec:
               - $values/{{.app}}/{{.cluster}}/values.yaml
         - repoURL: https://github.com/elevy99927/argo-demo-repo.git
           targetRevision: application
-          ref: values
+          ref: values 
+        - repoURL: https://github.com/elevy99927/argo-demo-repo.git
+          targetRevision: application
+          path: "{{.app}}/{{.cluster}}/secrets" # Reflactor Secrets
+
       destination:
         server: https://kubernetes.default.svc
         namespace: jenkins

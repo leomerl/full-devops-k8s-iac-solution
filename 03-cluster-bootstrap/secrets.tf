@@ -3,10 +3,10 @@ resource "kubernetes_secret" "docker-cred" {
 
   metadata {
     name      = "docker-cred"
-    namespace = "argocd"
+    namespace = "devops-utils"
     annotations = {
       "reflector.v1.k8s.emberstack.com/reflection-allowed"            = "true"
-      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = ".*"
+      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = "jenkins"
     }
   }
 
@@ -26,10 +26,10 @@ resource "kubernetes_secret" "github_token" {
 
   metadata {
     name      = "github-token"
-    namespace = "argocd"
+    namespace = "devops-utils"
     annotations = {
       "reflector.v1.k8s.emberstack.com/reflection-allowed"            = "true"
-      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = ".*"
+      "reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces" = "jenkins"
     }
   }
 

@@ -13,7 +13,7 @@ module "argo-cd" {
       name  = "configs.secret.argocdServerAdminPassword"
       value = var.argocd_admin_password
     },
-         {
+    {
         name  = "server.ingress.enabled"
         value = "true"
       },
@@ -26,8 +26,8 @@ module "argo-cd" {
         value = "traefik"
       },
       {
-        name  = "configs.params.server.insecure"
-        value = "true"
+        name  = "server.ingress.annotations.traefik\\.ingress\\.kubernetes\\.io/service\\.serversscheme"
+        value = "https"
       },
       {
         name  = "server.insecure"
