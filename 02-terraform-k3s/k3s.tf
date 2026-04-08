@@ -1,7 +1,7 @@
 module "k3s" {
   source = "../modules/k3s"
 
-  name          = var.cluster_name
+  name = "${var.project_name}-sandbox" #var.cluster_name
   vpc_id        = module.network.vpc_id
   subnet_id     = module.network.public_subnet_ids[0]
   key_name      = aws_key_pair.k3s.key_name

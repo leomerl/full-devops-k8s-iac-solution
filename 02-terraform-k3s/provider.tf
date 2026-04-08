@@ -21,6 +21,13 @@ terraform {
 
 provider "aws" {
   region = var.AWS_REGION
+  default_tags {
+    tags = {
+      Project     = var.project_name
+      Owner   = "Eyal Levy"
+      Environment = var.enviorment
+    }
+  }
 }
 
 provider "random" {}
