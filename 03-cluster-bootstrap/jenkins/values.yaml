@@ -20,13 +20,20 @@ controller:
     - git:latest
     - configuration-as-code:latest
     - job-dsl:latest
+    - pipeline-stage-view:latest
 
   JCasC:
     configScripts:
-      jobs: |
+      folders: |
         jobs:
           - script: >
-              pipelineJob('hello-newapp') {
+              folder('team-1')
+          - script: >
+              folder('team-2')
+      team-1-jobs: |
+        jobs:
+          - script: >
+              pipelineJob('team-1/hello-newapp') {
                 triggers {
                   scm('* * * * *')
                 }
