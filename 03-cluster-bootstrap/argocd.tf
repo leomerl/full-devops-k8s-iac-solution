@@ -9,38 +9,31 @@ module "argo-cd" {
     namespace     = "argocd"   
 
     set = [
-    {
-      name  = "configs.secret.argocdServerAdminPassword"
-      value = var.argocd_admin_password
-    },
-    {
-        name  = "server.ingress.enabled"
-        value = "true"
-      },
-      {
-        name  = "server.ingress.hostname"
-        value = "argocd.${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io"
-      },
-      {
-        # default ingressClass for k3s
-        name  = "server.ingress.ingressClassName"
-        value = "traefik"
-      },
-      { 
-        # Workaround for the 'server.insecure' probably can by solved with proper annotations
-        name  = "server.service.servicePortHttps" 
-        value = "80"
-      },      
-      {
-        name  = "configs.params.server.insecure"
-        value = "true"
-      },
-      
-      {
-        name  = "server.insecure"
-        value = "true"
-      }
-  ]
+        {
+          name  = "configs.secret.argocdServerAdminPassword"
+          value = var.argocd_admin_password
+        },
+        {
+          name  = "server.ingress.enabled"
+          value = "true"
+        },
+        {
+          name  = "server.ingress.hostname"
+          value = "argocd.${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io"
+        },
+        {
+          name  = "server.ingress.ingressClassName"
+          value = "traefik"
+        },
+        {
+          name  = "configs.params.server\\.insecure"
+          value = "true"
+        },
+        {
+          name  = "server.ingress.annotations.traefik\\.ingress\\.kubernetes\\.io/router\\.entrypoints"
+          value = "websecure"
+        }
+      ]
 
 }
 
