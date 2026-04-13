@@ -11,6 +11,12 @@
 
 ## 03 Configure cluster
 * Add docker.com token: `Account Settings` -> `Personal access tokens`
+```sh
+docker login -u elevy99927
+
+At the password prompt, enter the personal access token.
+```
+
 * Add github.com token: `Security` -> `personal access tokens` -> `Fine-grained tokens`
 
 ### Login to Argo

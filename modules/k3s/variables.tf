@@ -25,7 +25,7 @@ variable "instance_type" {
 
 variable "agent_instance_type" {
   type    = string
-  default = "t3.small"
+  default = "t3.medium"
 }
 
 variable "ami_id" {

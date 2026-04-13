@@ -6,7 +6,8 @@ module "k3s" {
   subnet_id     = module.network.public_subnet_ids[0]
   key_name      = aws_key_pair.k3s.key_name
   allowed_cidrs = var.ALLOW_IPS
-
+  instance_type = var.instance_type
+  
   extra_ingress_rules = [
     {
       description = "Kubernetes NodePort range"

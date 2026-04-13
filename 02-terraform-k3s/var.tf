@@ -28,6 +28,10 @@ variable "kubeconfig_path" {
   default = "./k3s.yaml"
 }
 
+variable "instance_type" {
+   type   = string
+   default = "t2.medium"
+}
 
 # variable "vpc_name" {
 #   type    = string
