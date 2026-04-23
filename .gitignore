@@ -20,6 +20,7 @@ ServerIP.txt
 terraform/ssh/
 *.pem
 k3s.yaml
+k3s-token.txt
 
 # OS
 .DS_Store

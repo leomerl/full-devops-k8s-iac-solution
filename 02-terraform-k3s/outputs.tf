@@ -27,6 +27,10 @@ output "ssh_login_cmd" {
   value = "\n ssh -i ${local.ssh_key_path} ec2-user@${module.k3s.server_public_ip}"
 }
 
+output "k3s_token_file" {
+  value = "K3S TOKEN: k3s-token.txt"
+}
+
 resource "local_file" "exported-server-ip" {
   content  = module.k3s.server_public_ip
   filename = "../ServerIP.txt"

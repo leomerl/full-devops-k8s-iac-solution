@@ -20,6 +20,19 @@ resource "null_resource" "kubeconfig" {
 }
 
 
+resource "null_resource" "get_k3s_token" {
+  depends_on = [null_resource.kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        ec2-user@${module.k3s.server_public_ip} \
+        'sudo cat /var/lib/rancher/k3s/server/node-token' > "${path.module}/k3s-token.txt"
+    EOT
+  }
+}
+
 resource "null_resource" "cleanup" {
   depends_on = [null_resource.kubeconfig]
 
