@@ -9,3 +9,10 @@ output "jenkins-url" {
 
 
 }
+
+
+output "grafana-url" {
+   value = "http://${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io:32004 ... 10 minutes from now"
+
+
+}

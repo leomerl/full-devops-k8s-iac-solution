@@ -1,6 +1,11 @@
-kubeconfig_path = "../terraform-k3s/k3s.yaml"
+kubeconfig_path = "../02-terraform-k3s/k3s.yaml"
 
-dockerhub_username      = "rougawh"
-dockerhub_token         = ""
-github_token            = ""
-weave_gitops_password_hash = ""  # bcrypt hash, generate with: htpasswd -nBC 10 "" | tr -d ':\n'
+AWS_REGION="eu-west-1"
+state_bucket_name="levy-test-bucket"
+ALLOW_IPS=["1.2.3.0/24"]
+
+
+dockerhub_username      = "elevy99927"
+dockerhub_token         = "put_your_token_here"     # dckr_pat_.... from https://app.docker.com/accounts/<YOUR_ID>/settings/personal-access-tokens
+github_token            = "put_your_token_here"     # github_pat_... from https://github.com/settings/personal-access-tokens
+argocd_admin_password = ""  # htpasswd -nbBC 10 "" "Aa123456" | tr -d ':\n' 

@@ -29,3 +29,10 @@ terraform apply
 | `dockerhub_token` | Docker Hub access token | — |
 | `github_token` | GitHub personal access token | — |
 | `argocd_admin_password` | ArgoCD admin bcrypt hash | — |
+
+
+## Docker hub token
+[Personal Access Token](https://app.docker.com/accounts/<YOURID>/settings/personal-access-tokens)
+
+## Github token
+[Fine-grained personal access tokens](https://github.com/settings/personal-access-tokens)
