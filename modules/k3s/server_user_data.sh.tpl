@@ -12,3 +12,9 @@ curl -sfL https://get.k3s.io | \
     --write-kubeconfig-mode 644 \
     --tls-san "$PUBLIC_IP" \
     --tls-san "$PRIVATE_IP"
+
+# # Clean up token from user-data
+# rm -f /var/lib/cloud/instance/user-data.txt
+# rm -f /var/lib/cloud/instance/scripts/part-001
+# rm -f /var/lib/cloud/instances/*/user-data.txt
+# rm -f /var/lib/cloud/instances/*/scripts/part-001
