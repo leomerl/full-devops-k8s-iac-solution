@@ -15,6 +15,23 @@ resource "null_resource" "kubeconfig" {
         ec2-user@${module.k3s.server_public_ip} \
         'cat /etc/rancher/k3s/k3s.yaml' | \
         sed 's/127.0.0.1/${module.k3s.server_public_ip}/g' > "${path.module}/k3s.yaml"
+      EOT
+  }
+}
+
+
+resource "null_resource" "cleanup" {
+  depends_on = [null_resource.kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<-EOT
+        echo "================================"
+        echo "=   Cleaning User-Data files.  ="
+        echo "================================"
+      ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        ec2-user@${module.k3s.server_public_ip} \
+        sudo rm -f /var/lib/cloud/instance/user-data.txt*  /var/lib/cloud/instance/scripts/part-001* /var/lib/cloud/instances/*/user-data.txt* /var/lib/cloud/instances/*/scripts/part-001*
     EOT
   }
 }

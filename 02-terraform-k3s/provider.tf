@@ -25,6 +25,7 @@ provider "aws" {
     tags = {
       Project     = var.project_name
       Owner   = "Eyal Levy"
+      schedule = "stop_dont_start"
       Environment = var.enviorment
     }
   }
