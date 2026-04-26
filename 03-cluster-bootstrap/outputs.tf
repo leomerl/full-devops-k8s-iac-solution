@@ -5,9 +5,11 @@ output "argocd-url" {
 
 
 output "jenkins-url" {
-   value = "http://${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io:32001 ... 10 minutes from now"
+   value = "JENKINS REMOVED"
+}
 
-
+output "temporal-url" {
+   value = "http://${data.terraform_remote_state.k3s.outputs.server_public_ip}:32005 ... 10 minutes from now"
 }
 
 

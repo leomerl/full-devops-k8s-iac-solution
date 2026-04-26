@@ -2,12 +2,14 @@
 
 # 03 - Cluster Bootstrap
 
-Configures the K3s cluster with ArgoCD, Jenkins, and supporting tools via Helm and ApplicationSets.
+Configures the K3s cluster with ArgoCD, Temporal, and supporting tools via Helm and ApplicationSets.
 
 ## What it deploys
 - ArgoCD (with Traefik ingress)
-- Jenkins (via ArgoCD ApplicationSet)
+- Temporal (via ArgoCD ApplicationSet)
 - Reflector (secret mirroring across namespaces)
+- Loki + Promtail (log aggregation)
+- Prometheus + Grafana (monitoring)
 - ApplicationSets from `applicationsets/` folder
 
 ## Usage
