@@ -24,7 +24,7 @@ output "ssh_key_path" {
 }
 
 output "ssh_login_cmd" {
-  value = "\n ssh -i ${local.ssh_key_path} ec2-user@${module.k3s.server_public_ip}"
+  value = "ssh -i ${local.ssh_key_path} ec2-user@$(cat ${path.module}/../ServerIP.txt)"
 }
 
 output "k3s_token_file" {

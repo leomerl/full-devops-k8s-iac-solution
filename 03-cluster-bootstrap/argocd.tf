@@ -19,7 +19,7 @@ module "argo-cd" {
         },
         {
           name  = "server.ingress.hostname"
-          value = "argocd.${data.terraform_remote_state.k3s.outputs.server_public_ip}.nip.io"
+          value = "argocd.${local.server_ip}.nip.io"
         },
         {
           name  = "server.ingress.ingressClassName"
