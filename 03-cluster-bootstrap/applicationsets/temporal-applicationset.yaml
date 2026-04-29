@@ -24,7 +24,7 @@ spec:
           targetRevision: 1.1.1
           helm:
             valueFiles:
-              - $values/{{.app}}/{{.cluster}}/values.yaml
+              - $values/{{.app}}/{{.cluster}}/temporal-values.yaml
         - repoURL: https://github.com/elevy99927/argo-demo-repo.git
           targetRevision: application
           ref: values 
