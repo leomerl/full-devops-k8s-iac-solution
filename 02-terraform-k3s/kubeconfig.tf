@@ -36,6 +36,12 @@ resource "null_resource" "wipe_userdata" {
       echo "============================"
       echo "=  Step 1: Stop Instance   ="
       echo "============================"
+      OLD_IP=$(aws ec2 describe-instances \
+        --instance-ids ${module.k3s.server_instance_id} \
+        --region ${var.AWS_REGION} \
+        --query 'Reservations[0].Instances[0].PublicIpAddress' \
+        --output text)
+
       aws ec2 stop-instances \
         --instance-ids ${module.k3s.server_instance_id} \
         --region ${var.AWS_REGION}
@@ -71,14 +77,27 @@ resource "null_resource" "wipe_userdata" {
         --output text)
       echo "$NEW_IP" > "${path.module}/../ServerIP.txt"
 
-      echo "====================================="
-      echo "= Step 5: Cleaning User-Data files  ="
-      echo "====================================="
-      ssh -i "${path.module}/${var.cluster_name}.pem" \
+
+      echo " update k3s cerificates"
+      until ssh -i "${path.module}/${var.cluster_name}.pem" \
         -o StrictHostKeyChecking=no \
+        -o ConnectTimeout=5 \
         ec2-user@$NEW_IP \
-        sudo rm -f /var/lib/cloud/instance/user-data.txt*  /var/lib/cloud/instance/scripts/part-001* /var/lib/cloud/instances/*/user-data.txt* /var/lib/cloud/instances/*/scripts/part-001*
-    EOT
+        "sudo sed -i 's/$OLD_IP/$NEW_IP/g' /etc/systemd/system/k3s.service" 2>/dev/null; do
+        sleep 10
+      done
+
+      echo " restart k3s"
+      until ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        -o ConnectTimeout=5 \
+        ec2-user@$NEW_IP \
+        'sudo systemctl daemon-reload && sudo systemctl restart k3s' 2>/dev/null; do
+        sleep 10
+      done
+           
+
+  EOT
   }
 }
 
@@ -87,15 +106,42 @@ resource "null_resource" "kubeconfig" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo "==========================="
-      echo "=      sed kubeconfig     ="
-      echo "==========================="
       NEW_IP=$(cat ${path.module}/../ServerIP.txt)
+      
+      echo "==========================================="
+      echo "=      Regenerate k3s TLS certs for       ="
+      echo "=         new IP: $NEW_IP                 ="
+      echo "==========================================="
+      
+      
+      until ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        -o ConnectTimeout=5 \
+        ec2-user@$NEW_IP \
+        'sudo test -f /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt' 2>/dev/null; do
+        sleep 10
+      done
+      ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        ec2-user@$NEW_IP \
+        'sudo rm -f /var/lib/rancher/k3s/server/tls/dynamic-cert.json /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key && sudo systemctl restart k3s'
+
+      echo "= Waiting for k3s to be ready with new certs..."
+      until ssh -i "${path.module}/${var.cluster_name}.pem" \
+        -o StrictHostKeyChecking=no \
+        -o ConnectTimeout=5 \
+        ec2-user@$NEW_IP \
+        'kubectl get nodes --kubeconfig /etc/rancher/k3s/k3s.yaml 2>/dev/null | grep -q Ready' 2>/dev/null; do
+        sleep 10
+      done
+
+      echo "pulling kubeconfig to local machine..."
       ssh -i "${path.module}/${var.cluster_name}.pem" \
         -o StrictHostKeyChecking=no \
         ec2-user@$NEW_IP \
         'cat /etc/rancher/k3s/k3s.yaml' | \
         sed "s/127.0.0.1/$NEW_IP/g" > "${path.module}/k3s.yaml"
+
     EOT
   }
 }
@@ -105,13 +151,17 @@ resource "null_resource" "cleanup" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo "================================"
-      echo "=   Cleaning User-Data files.  ="
-      echo "================================"
+      NEW_IP=$(cat ${path.module}/../ServerIP.txt)
+
+      echo "===================================="
+      echo "=     Cleaning User-Data files     ="
+      echo "===================================="
+      
       ssh -i "${path.module}/${var.cluster_name}.pem" \
         -o StrictHostKeyChecking=no \
-        ec2-user@$(cat ${path.module}/../ServerIP.txt) \
+        ec2-user@$NEW_IP \
         sudo rm -f /var/lib/cloud/instance/user-data.txt*  /var/lib/cloud/instance/scripts/part-001* /var/lib/cloud/instances/*/user-data.txt* /var/lib/cloud/instances/*/scripts/part-001*
+  
     EOT
   }
 }
