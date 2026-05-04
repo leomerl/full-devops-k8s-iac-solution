@@ -19,15 +19,20 @@ spec:
     spec:
       project: default
       sources:
+        ## Temporal
         - repoURL: https://go.temporal.io/helm-charts
           chart: temporal
           targetRevision: 1.1.1
           helm:
             valueFiles:
               - $values/{{.app}}/{{.cluster}}/temporal-values.yaml
+
+
+        # Values repo reference
         - repoURL: https://github.com/elevy99927/argo-demo-repo.git
           targetRevision: application
-          ref: values 
+          ref: values
+
         - repoURL: https://github.com/elevy99927/argo-demo-repo.git
           targetRevision: application
           path: "{{.app}}/{{.cluster}}/secrets" # Reflactor Secrets

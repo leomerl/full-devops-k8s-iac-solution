@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: mysql-operator
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - list:
+        elements:
+          - app: temporal
+            cluster: k8s-qa
+
+  template:
+    metadata:
+      name: "mysql-operator-{{.cluster}}"
+    spec:
+      project: default
+      sources:
+        ## MySQL Operator
+        - repoURL: https://mysql.github.io/mysql-operator/
+          chart: mysql-operator
+          targetRevision: "*"
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: temporal
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: temporal-mysql
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - list:
+        elements:
+          - app: temporal
+            cluster: k8s-qa
+
+  template:
+    metadata:
+      name: "{{.app}}-mysql-{{.cluster}}"
+    spec:
+      project: default
+      sources:
+        ## Mysql plain manifests
+        - repoURL: https://github.com/elevy99927/argo-demo-repo.git
+          targetRevision: application
+          path: "{{.app}}/{{.cluster}}/mysql"
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: temporal
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
