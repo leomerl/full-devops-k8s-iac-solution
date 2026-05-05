@@ -124,7 +124,7 @@ resource "null_resource" "kubeconfig" {
       ssh -i "${path.module}/${var.cluster_name}.pem" \
         -o StrictHostKeyChecking=no \
         ec2-user@$NEW_IP \
-        'sudo rm -f /var/lib/rancher/k3s/server/tls/dynamic-cert.json /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key && sudo systemctl restart k3s'
+        'sudo rm -f /var/lib/rancher/k3s/server/tls/dynamic-cert.json /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.crt /var/lib/rancher/k3s/server/tls/serving-kube-apiserver.key && sudo rm -rf /var/lib/rancher/k3s/server/db/ && sudo systemctl restart k3s'
 
       echo "= Waiting for k3s to be ready with new certs..."
       until ssh -i "${path.module}/${var.cluster_name}.pem" \
@@ -161,7 +161,7 @@ resource "null_resource" "cleanup" {
         -o StrictHostKeyChecking=no \
         ec2-user@$NEW_IP \
         sudo rm -f /var/lib/cloud/instance/user-data.txt*  /var/lib/cloud/instance/scripts/part-001* /var/lib/cloud/instances/*/user-data.txt* /var/lib/cloud/instances/*/scripts/part-001*
-  
+
     EOT
   }
 }
