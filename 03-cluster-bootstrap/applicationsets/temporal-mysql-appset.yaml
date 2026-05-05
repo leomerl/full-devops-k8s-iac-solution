@@ -58,7 +58,9 @@ spec:
         ## Mysql plain manifests
         - repoURL: https://github.com/elevy99927/argo-demo-repo.git
           targetRevision: application
-          path: "{{.app}}/{{.cluster}}/mysql"
+          helm:
+            valueFiles:
+              - $values/{{.app}}/{{.cluster}}/innodb-values.yaml
 
       destination:
         server: https://kubernetes.default.svc
